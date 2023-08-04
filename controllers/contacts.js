@@ -1,9 +1,14 @@
 const { Contact } = require('../models/contact');
-
 const { HttpError, controllerWrapper } = require('../helpers');
 
 const getAllContacts = async (req, res) => {
-    const result = await Contact.find();
+    const { _id: owner } = req.user;
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+    const result = await Contact.find({ owner }, '', { skip, limit }).populate(
+        'owner',
+        'name email'
+    );
     res.json(result);
 };
 
@@ -19,7 +24,8 @@ const getContactById = async (req, res) => {
 };
 
 const addContact = async (req, res) => {
-    const result = await Contact.create(req.body);
+    const { _id: owner } = req.user;
+    const result = await Contact.create({ ...req.body, owner });
     res.status(201).json(result);
 };
 
@@ -45,7 +51,7 @@ const updateContactById = async (req, res) => {
     res.json(result);
 };
 
-const updateFavorite = async (req, res) => {
+const updateFavoriteContact = async (req, res) => {
     const { id } = req.params;
     const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
     if (!result) {
@@ -60,5 +66,5 @@ module.exports = {
     addContact: controllerWrapper(addContact),
     deleteContactById: controllerWrapper(deleteContactById),
     updateContactById: controllerWrapper(updateContactById),
-    updateFavorite: controllerWrapper(updateFavorite),
+    updateFavoriteContact: controllerWrapper(updateFavoriteContact),
 };
