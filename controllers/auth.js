@@ -1,5 +1,7 @@
 const { User } = require('../models/user');
-const { HttpError, controllerWrapper, sendEmail } = require('../helpers');
+const { HttpError } = require('../helpers/HttpError');
+const { sendEmail } = require('../helpers/sendEmail');
+const { controllerWrapper } = require('../helpers/ctrlWrapper');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY, DB_URI } = process.env;
@@ -161,7 +163,7 @@ const updateAvatar = async (req, res) => {
 
 module.exports = {
     register: controllerWrapper(register),
-    verifyEmail:controllerrWrapper(verifyEmail),
+    verifyEmail:controllerWrapper(verifyEmail),
     resendVerifyEmail: controllerWrapper(resendVerifyEmail),
     login: controllerWrapper(login),
     getCurrent: controllerWrapper(getCurrent),

@@ -3,9 +3,12 @@ const controllerWrapper = ctrl => {
         try {
             await ctrl(req, res, next);
         } catch (error) {
+            console.error('Ошибка в контроллере:', error);
             next(error);
         }
     };
 };
 
-module.exports = controllerWrapper;
+module.exports = {
+    controllerWrapper,
+}
