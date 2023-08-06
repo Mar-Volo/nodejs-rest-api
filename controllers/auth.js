@@ -29,11 +29,11 @@ const register = async (req, res) => {
         avatarURL,
         verificationToken,
     });
-    await sendEmail({
-        to: email,
-        subject: `Welcom on board, ${name}`,
-        html: `<a target="_blank" href="${DB_URI}/api/auth/verify/${verificationToken}">Click to verify your email</a>`
-    });
+    // await sendEmail({
+    //     to: email,
+    //     subject: `Welcom on board, ${name}`,
+    //     html: `<a target="_blank" href="${DB_URI}/api/auth/verify/${verificationToken}">Click to verify your email</a>`
+    // });
 
     const verifyEmail = {
         to: email,
